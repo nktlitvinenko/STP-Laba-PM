@@ -1,0 +1,297 @@
+<Page x:Class="ProjectManager.Client.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:page="clr-namespace:ProjectManager.Client.ViewModels.Page"
+      xmlns:converters="clr-namespace:ProjectManager.Client.Converters"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="MainPage"
+      Background="White">
+    <Page.DataContext>
+        <page:MainViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <converters:IssuePriorityToImage x:Key="IssuePriorityToImage"/>
+        <converters:IssueTypeToImage x:Key="IssueTypeToImage"/>
+        <converters:IssueStatusToImage x:Key="IssueStatusToImage"/>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="75*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Projects" Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding AddProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/add.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding EditProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/edit.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding DeleteProjectCommand}">
+                            <Image Source="../Resources/Images/Buttons/delete.png"/>
+                        </Button>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}" Grid.Row="1">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="5" Grid.Column="0" Text="{Binding Path=Name}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Tasks" Grid.Row="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding AddProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/add.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding EditProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/edit.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding DeleteProjectCommand}">
+                            <Image Source="../Resources/Images/Buttons/delete.png"/>
+                        </Button>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding Issues}" SelectedItem="{Binding SelectedIssue}" Grid.Row="1">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Height="15" Width="15" Stretch="UniformToFill" 
+                                           Source="{Binding Priority, Converter={StaticResource IssuePriorityToImage}}"></Image>
+                                        <TextBlock Margin="5" Grid.Column="1" Text="{Binding Path=Name}"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="5" Grid.Column="0" Text="{Binding Path=Created, StringFormat=d}"/>
+                                        <TextBlock Margin="5" Grid.Column="1" Text="{Binding Path=Updated, StringFormat=d}"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="137"/>
+                <RowDefinition Height="113*"/>
+                <RowDefinition Height="150*"/>
+                <RowDefinition Height="200*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="131*"/>
+                <ColumnDefinition Width="69*"/>
+            </Grid.ColumnDefinitions>
+            <TabControl Margin="5" Grid.Row="3">
+                <TabItem Header="Comments">
+                    <Grid Background="#FFE5E5E5">
+                        <ListView Margin="0">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Commits">
+                    <Grid Background="#FFE5E5E5">
+                        <ListView Margin="0">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <GroupBox Header="Attachments" Margin="5,5,5,0" Grid.Row="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="0">
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding AddProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/add.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding EditProjectWindowCommand}">
+                            <Image Source="../Resources/Images/Buttons/edit.png"/>
+                        </Button>
+                        <Button 
+                            Height="20" Width="20" Margin="5 0 0 0" 
+                            Background="Transparent" BorderBrush="Transparent"
+                            Command="{Binding DeleteProjectCommand}">
+                            <Image Source="../Resources/Images/Buttons/delete.png"/>
+                        </Button>
+                    </StackPanel>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding CurrentIssue.Attachments}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="{Binding Path=Name}" Grid.Row="0"/>
+                                    <Label Content="{Binding Path=Uri}" Grid.Row="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="0" Header="Description" Margin="5" Grid.Row="1">
+                <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding CurrentIssue.Description}"></TextBox>
+            </GroupBox>
+            <GroupBox Header="Details" Margin="5">
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.ColumnSpan="4" Text="{Binding CurrentIssue.Name}" FontSize="16" Margin="5 0 0 0"></TextBlock>
+                    <Label Content="Component:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="80" Grid.Row="3"/>
+             
+                    <Label Content="Resolution:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="81" Grid.Column="2" Grid.Row="2"/>
+
+                    <Label Content="Type:" Margin="0,0,0,0" Height="26" Width="54" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"/>
+                    <Image Grid.Column="1" Grid.Row="1" Height="15" Width="15" HorizontalAlignment="Left"
+                           Source="{Binding CurrentIssue.Type, Converter={StaticResource IssueTypeToImage}}"/>
+                    <Label Content="{Binding CurrentIssue.Type}" HorizontalAlignment="Left" Margin="20,0,0,0" Height="26" Grid.Column="1" Grid.Row="1"/>
+
+                    <Label Content="Priority:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="59" Grid.Row="2" Grid.Column="0"/>
+                    <Image Grid.Column="1" Grid.Row="2" Height="15" Width="15" HorizontalAlignment="Left"
+                           Source="{Binding CurrentIssue.Priority, Converter={StaticResource IssuePriorityToImage}}"></Image>
+                    <Label Content="{Binding CurrentIssue.Priority}" HorizontalAlignment="Left" Margin="20,0,0,0" Height="26" Grid.Column="1" Grid.Row="2"/>
+
+                    <Label Content="Status:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="54" Grid.Column="2" Grid.Row="1"/>
+                    <Image Grid.Column="3" Grid.Row="1" Height="15" Width="15" HorizontalAlignment="Left"
+                        Source="{Binding CurrentIssue.Status, Converter={StaticResource IssueStatusToImage}}"></Image>
+                    <Label Content="{Binding CurrentIssue.Status}" HorizontalAlignment="Left" Margin="20,0,0,0" Height="26" Grid.Column="3" Grid.Row="1"/>
+
+                    <Label Content="Server" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="80" Grid.Column="1" Grid.Row="3"/>
+                    
+                    <Label Content="Unresolved" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="81" Grid.Column="3" Grid.Row="2"/>
+                </Grid>
+            </GroupBox>
+            <Grid Grid.Column="1" Margin="0" Grid.RowSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0" FlowDirection="RightToLeft">
+                    <Button Content="Resolve task" Margin="5,0,0,0" Width="75" Height="30" HorizontalAlignment="Left"/>
+                    <Button Content="Start progress" Margin="5,0,0,0" Width="85" Height="30" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <GroupBox Header="People" Margin="5,5,5,0" Height="70" Grid.Row="1">
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="90*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Assigne:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="54"/>
+                        <Label Content="Reporter:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="59" Grid.Row="1"/>
+                        <Label Content="{Binding CurrentIssue.Assigne.Email}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Column="1" Height="26"/>
+                        <Label Content="{Binding CurrentIssue.Reporter.Email}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Column="1" Height="26" Grid.Row="1"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Dates" Margin="5" Height="70" Grid.Row="2">
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="90*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Created:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="54"/>
+                        <Label Content="Updated:" HorizontalAlignment="Left" Margin="0,0,0,0" Height="26" Width="59" Grid.Row="1"/>
+                        <Label Content="{Binding CurrentIssue.Created}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Column="1" Height="26" Width="98"/>
+                        <Label Content="{Binding CurrentIssue.Updated}" HorizontalAlignment="Left" Margin="0,0,0,0" Grid.Column="1" Height="26" Width="113" Grid.Row="1"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="Sub tasks" Margin="5" Grid.Row="3">
+                    <ListBox BorderBrush="{x:Null}"/>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

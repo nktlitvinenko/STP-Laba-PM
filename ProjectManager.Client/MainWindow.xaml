@@ -1,0 +1,76 @@
+﻿<Window x:Class="ProjectManager.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:ProjectManager.Client.ViewModels"
+        xmlns:converters="clr-namespace:ProjectManager.Client.Converters"
+        Title="MainWindow" Height="600" Width="800" MinHeight="600" MinWidth="800">
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <converters:ConnectionStateToImage x:Key="ConnectionStateToImage"/>
+    </Window.Resources>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Grid DockPanel.Dock="Top" Height="40" Background="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Background="Lavender">
+                    <Button 
+                    Height="30" Width="30" Margin="5 0 0 0"
+                    Background="Transparent" BorderBrush="Transparent"
+                        Command="{Binding BackCommand}" 
+                        CommandParameter="{Binding ElementName=MainFrame}">
+                        <Image Source="Resources/Images/Buttons/prev.png"/>
+                    </Button>
+                    <Button 
+                    Height="30" Width="30" Margin="0 0 5 0"
+                    Background="Transparent" BorderBrush="Transparent"
+                        Command="{Binding ForwardCommand}" 
+                        CommandParameter="{Binding ElementName=MainFrame}">
+                        <Image Source="Resources/Images/Buttons/next.png"/>
+                    </Button>
+                </StackPanel>
+                <Menu Grid.Column="1" Background="Lavender">
+                    <MenuItem Header="Dashboard" Padding="0 10 10 10"
+                        Command="{Binding DashboardCommand}" 
+                        CommandParameter="{Binding ElementName=MainFrame}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/Images/Buttons/homework.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Users" Padding="0 10 10 10" 
+                              Command="{Binding UserCommand}" 
+                              CommandParameter="{Binding ElementName=MainFrame}">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/Images/Buttons/users.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </Menu>
+                <Menu Grid.Column="2" Background="Lavender">
+                    <MenuItem Header="{Binding CurrentUser}" Padding="0 10 10 10">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/Images/Buttons/user.png"/>
+                        </MenuItem.Icon>
+                        <MenuItem Header="Profile"></MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Logout">
+                            <MenuItem.Icon>
+                                <Image Source="Resources/Images/Buttons/logout.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+            </Grid>
+            <StatusBar DockPanel.Dock="Bottom" Height="30" Background="Lavender">
+                <Image Height="20" Width="20" Stretch="UniformToFill"
+                   Source="{Binding ConnectionState, Converter={StaticResource ConnectionStateToImage}}"></Image>
+                <Hyperlink Command="{Binding AccessTokenCommand}">Access token</Hyperlink>
+            </StatusBar>
+            <Frame x:Name="MainFrame" Source="Pages/MainPage.xaml" NavigationUIVisibility="Hidden"></Frame>
+        </DockPanel>
+    </Grid>
+</Window>
