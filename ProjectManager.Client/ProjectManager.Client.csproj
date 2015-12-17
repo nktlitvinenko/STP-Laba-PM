@@ -37,8 +37,9 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MVVMCommon">
-      <HintPath>D:\MyProjects\SkypeBot\SkypeCallerGUI\MVVMCommon.dll</HintPath>
+    <Reference Include="MVVMCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MVVMCommon.1.0.0\lib\MVVMCommon.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -258,7 +259,6 @@
   <ItemGroup>
     <Resource Include="Resources\Images\IssueStatuses\resolved.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
