@@ -38,6 +38,14 @@ namespace ProjectManager.Server.Controllers
 
         //public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
+        [HttpGet]
+        [AllowAnonymous][Route("UserIsExist")]        
+        public bool UserIsExist(string userName)
+        {
+            var user = _userManager.FindByNameAsync(userName).Result;
+            return user != null;
+        }
+
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]

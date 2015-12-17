@@ -9,18 +9,20 @@ using System.Windows;
 using System.Windows.Input;
 using MVVMCommon;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using ProjectManager.Entity;
-using System.ComponentModel.DataAnnotations;
+using ProjectManager.Entity.Enumerations;
 
 namespace ProjectManager.Client.ViewModels
 {
-    public class EditProjectViewModel : ViewModelBase
+    public class EditIssueViewModel : ViewModelBase
     {
         private string _name;
         private string _description;
+        private string _environment;
+        private IssueType _type;
+        private IssuePriority _priority;
+        private string _projectId;
 
-        [Required]
         public string Name
         {
             get { return _name; }
@@ -30,8 +32,6 @@ namespace ProjectManager.Client.ViewModels
                 NotifyPropertyChanged("Name");
             }
         }
-
-        [Required]
         public string Description
         {
             get { return _description; }
@@ -41,11 +41,47 @@ namespace ProjectManager.Client.ViewModels
                 NotifyPropertyChanged("Description");
             }
         }
+        public string Environment
+        {
+            get { return _environment; }
+            set
+            {
+                _environment = value;
+                NotifyPropertyChanged("Environment");
+            }
+        }
+        public IssueType Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                NotifyPropertyChanged("Type");
+            }
+        }
+        public IssuePriority Priority
+        {
+            get { return _priority; }
+            set
+            {
+                _priority = value;
+                NotifyPropertyChanged("Priority");
+            }
+        }
+        public string ProjectId
+        {
+            get { return _projectId; }
+            set
+            {
+                _projectId = value;
+                NotifyPropertyChanged("ProjectId");
+            }
+        }
 
 
         public ICommand SaveCommand
         {
-            get { return new RelayCommand<Window>(Save);}
+            get { return new RelayCommand<Window>(Save); }
         }
 
 
@@ -58,10 +94,18 @@ namespace ProjectManager.Client.ViewModels
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Configuration.AccessConfig.AccessToken);
 
-                var proj = new Project() { Name = this.Name, Description = this.Description };
+                var issue = new Issue()
+                {
+                    Name = this.Name, 
+                    Description = this.Description, 
+                    Environment = this.Environment, 
+                    Type = this.Type, 
+                    Priority = this.Priority,
+                    Project_Id = new Guid(this.ProjectId)
+                };
 
-                HttpResponseMessage resp = await client.PostAsync("api/Project",
-                    new StringContent("'" + JsonConvert.SerializeObject(proj)+"'", 
+                HttpResponseMessage resp = await client.PostAsync("api/Issue",
+                    new StringContent("'" + JsonConvert.SerializeObject(issue) + "'",
                         Encoding.UTF8, "application/json"));
                 if (resp.IsSuccessStatusCode)
                 {

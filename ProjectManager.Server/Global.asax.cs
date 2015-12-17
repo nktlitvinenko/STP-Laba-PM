@@ -15,8 +15,8 @@ namespace ProjectManager.Server
     {
         protected void Application_Start()
         {
-            Database.SetInitializer(
-                new DropCreateDatabaseIfModelChanges<DataContext>());
+            //Database.SetInitializer(
+              //  new DropCreateDatabaseIfModelChanges<DataContext>());
 
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using ProjectManager.Entity.Enumerations;
 using ProjectManager.Entity.Identity;
 
@@ -25,7 +26,10 @@ namespace ProjectManager.Entity
         public string Description { get; set; }
         public string Environment { get; set; }
 
-        public Project Project { get; set; }
+        [Column("Project_Id")][ForeignKey("Project")]
+        public Guid Project_Id { get; set; }
+        public virtual Project Project { get; set; }
+
         public Sprint Sprint { get; set; }
 
         public ApplicationUser Assigne { get; set; }

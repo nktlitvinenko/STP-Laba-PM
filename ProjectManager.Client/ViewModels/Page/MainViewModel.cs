@@ -11,6 +11,7 @@ using System.Windows.Input;
 using MVVMCommon;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ProjectManager.Client.Windows.Issue;
 using ProjectManager.Client.Windows.Project;
 using ProjectManager.Entity;
 
@@ -90,7 +91,6 @@ namespace ProjectManager.Client.ViewModels.Page
         {
             get { return new RelayCommand(c => EditProjectWindow()); }
         }
-
         public ICommand DeleteProjectCommand
         {
             get { return new RelayCommand(c => DeleteProject());}
@@ -107,7 +107,6 @@ namespace ProjectManager.Client.ViewModels.Page
         {
             
         }
-
         private async void DeleteProject()
         {
             var c = MessageBox.Show("Are you really want to delete this project?", "Delete?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
@@ -128,6 +127,61 @@ namespace ProjectManager.Client.ViewModels.Page
                     response = await resp.Content.ReadAsStringAsync();
                     //TODO remove when SignalR is working
                     GetProjects();
+                }
+                else
+                {
+                    MessageBox.Show(response, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
+        public ICommand AddIssueWindowCommand
+        {
+            get { return new RelayCommand(c => AddIssueWindow()); }
+        }
+        public ICommand EditIssueWindowCommand
+        {
+            get { return new RelayCommand(c => EditIssueWindow()); }
+        }
+        public ICommand DeleteIssueCommand
+        {
+            get { return new RelayCommand(c => DeleteIssue()); }
+        }
+
+        private void AddIssueWindow()
+        {
+            EditIssue ep = new EditIssue(SelectedProject.Id);
+            ep.ShowDialog();
+            //TODO remove when SignalR is working
+            if(SelectedProject != null)
+                GetIssueByProject(SelectedProject.Id);
+        }
+        private void EditIssueWindow()
+        {
+
+        }
+        private async void DeleteIssue()
+        {
+            var c = MessageBox.Show("Are you really want to delete this issue?", "Delete?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (c != MessageBoxResult.Yes)
+                return;
+            var response = "";
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5515/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Configuration.AccessConfig.AccessToken);
+
+                HttpResponseMessage resp = await client.DeleteAsync("api/Issue?id=" + SelectedIssue.Id);
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    response = await resp.Content.ReadAsStringAsync();
+                    //TODO remove when SignalR is working
+                    if(SelectedProject != null)
+                        GetIssueByProject(SelectedProject.Id);
                 }
                 else
                 {

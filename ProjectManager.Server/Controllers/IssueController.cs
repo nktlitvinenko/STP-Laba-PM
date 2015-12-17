@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Newtonsoft.Json;
 using ProjectManager.Common.DAL;
 using ProjectManager.Common.DAL.Repositories;
 using ProjectManager.Entity;
@@ -47,12 +48,25 @@ namespace ProjectManager.Server.Controllers
         // GET: api/Issue/5
         public JsonResult<Issue> Get(string issueId)
         {
-            return Json(_issueRepository.GetFullIssueById(new Guid(issueId)).Single());
+            var model = Json(_issueRepository.GetFullIssueById(new Guid(issueId)).Single());
+            return model;
         }
 
         // POST: api/Issue
         public void Post([FromBody]string value)
         {
+            var issue = JsonConvert.DeserializeObject<Issue>(value);
+            var entity = new Issue()
+            {
+                Name = issue.Name,
+                Description = issue.Description,
+                Environment = issue.Environment,
+                Type = issue.Type,
+                Priority = issue.Priority,
+                Project_Id = issue.Project_Id
+            };
+            _dataBaseFacade.Add<Issue>(entity);
+            _dataBaseFacade.Save<Issue>();
         }
 
         // PUT: api/Issue/5
@@ -61,8 +75,10 @@ namespace ProjectManager.Server.Controllers
         }
 
         // DELETE: api/Issue/5
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            _dataBaseFacade.Delete<Issue>(id);
+            _dataBaseFacade.Save<Issue>();
         }
     }
 }

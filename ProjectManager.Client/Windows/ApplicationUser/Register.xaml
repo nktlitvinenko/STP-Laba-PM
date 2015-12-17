@@ -1,0 +1,34 @@
+﻿<Window x:Class="ProjectManager.Client.Windows.ApplicationUser.Register"
+        x:Name="RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:ProjectManager.Client.ViewModels"
+        Title="Register" Height="200" Width="300">
+    <Window.DataContext>
+        <viewModels:RegisterViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0">Username:</Label>
+        <Label Grid.Row="1" Grid.Column="0">Password:</Label>
+        <Label Grid.Row="2" Grid.Column="0">Confirm password:</Label>
+        
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Username}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Password}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding ConfirmPassword}"/>
+        
+        <StackPanel Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="5" Padding="5" Command="{Binding RegisterCommand}" CommandParameter="{Binding ElementName=RegisterWindow}" IsDefault="True">Register</Button>
+            <Button Margin="5" Padding="5" IsCancel="True">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>
