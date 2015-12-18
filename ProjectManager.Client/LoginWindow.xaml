@@ -19,7 +19,11 @@
         </Grid.RowDefinitions>
         <Image Margin="10" Source="/Resources/Images/logo.png"></Image>
         <TextBox Margin="10 0 10 10" Padding="5" Grid.Row="1" Text="{Binding Email}"></TextBox>
-        <TextBox Margin="10 0 10 10" Padding="5" Grid.Row="2" Text="{Binding Password}"></TextBox>
+        <PasswordBox x:Name="PasswordBox"
+                     helpers:PasswordBoxHelper.BindPassword="True"
+                     helpers:PasswordBoxHelper.BoundPassword="{Binding Path=Password, Mode=TwoWay, 
+                     UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10 0 10 10" Padding="5" Grid.Row="2"></PasswordBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="3">
             <Button Width="70" Margin="10 0 10 10" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=StartWindow}">Login</Button>
         </StackPanel>

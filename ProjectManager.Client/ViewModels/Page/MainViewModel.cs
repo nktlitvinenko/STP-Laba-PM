@@ -151,11 +151,13 @@ namespace ProjectManager.Client.ViewModels.Page
 
         private void AddIssueWindow()
         {
-            EditIssue ep = new EditIssue(SelectedProject.Id);
-            ep.ShowDialog();
             //TODO remove when SignalR is working
-            if(SelectedProject != null)
+            if (SelectedProject != null)
+            {
+                EditIssue ep = new EditIssue(SelectedProject.Id);
+                ep.ShowDialog();
                 GetIssueByProject(SelectedProject.Id);
+            }
         }
         private void EditIssueWindow()
         {
